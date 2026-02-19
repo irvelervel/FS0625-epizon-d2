@@ -1,4 +1,4 @@
-import { ADD_TO_CART, REMOVE_FROM_CART } from '../actions'
+import { ADD_TO_CART, REMOVE_FROM_CART, SET_USERNAME } from '../actions'
 
 // il reducer è un componente fondamentale della logica di Redux
 // è un "robottino" che, dato lo stato corrente dell'applicativo e l'ultima azione appena
@@ -20,6 +20,9 @@ const initialState = {
     // cart si definisce "slice", "fetta" del Redux Store
     content: [], // qui salveremo i libri da mettere nel carrello
   },
+  user: {
+    name: '', // vuol dire valore "falsy"
+  },
 }
 
 const mainReducer = (currentState = initialState, action) => {
@@ -37,6 +40,7 @@ const mainReducer = (currentState = initialState, action) => {
         // l'oggetto che adesso ritorneremo dovrà avere tutti i valori dell'originale ma
         // allungare di 1 elemento l'array content
         ...currentState, // <- spread operator, crea una copia delle proprietà di currentState e le trapianta qua
+        // questo spread operator sta "trascinando" nei nuovi stati anche le altre slices come "user"
         cart: {
           ...currentState.cart,
           // content: currentState.cart.content.concat(action.payload), // action.payload era bookSelected
@@ -75,6 +79,14 @@ const mainReducer = (currentState = initialState, action) => {
           //       ) + 1,
           //     ),
           //   ],
+        },
+      }
+
+    case SET_USERNAME:
+      return {
+        ...currentState,
+        user: {
+          name: action.payload,
         },
       }
 
