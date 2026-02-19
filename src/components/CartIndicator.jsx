@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { FaShoppingCart } from 'react-icons/fa'
 import { useSelector, useDispatch } from 'react-redux'
 import { useState } from 'react'
-import { SET_USERNAME } from '../redux/actions'
+import { SET_USERNAME, setUsernameAction } from '../redux/actions'
 
 // CartIndicator ha bisogno di LEGGERE un valore dal Redux Store: la lunghezza dell'array cart.content
 // ogni volta che dovete LEGGERE un valore di Redux da un componente dovete utilizzare
@@ -29,10 +29,7 @@ const CartIndicator = () => {
   const handleSubmit = (e) => {
     e.preventDefault()
     // ora dispatcheremo una action che trasmetterà a Redux il valore del nome utente inserito nel form
-    dispatch({
-      type: SET_USERNAME,
-      payload: formValue,
-    })
+    dispatch(setUsernameAction(formValue))
   }
 
   return (

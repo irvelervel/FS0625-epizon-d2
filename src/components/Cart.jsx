@@ -1,7 +1,7 @@
 import { Col, Row, Button } from 'react-bootstrap'
 import { FaTrash } from 'react-icons/fa'
 import { useSelector, useDispatch } from 'react-redux'
-import { REMOVE_FROM_CART } from '../redux/actions'
+import { REMOVE_FROM_CART, removeFromCartAction } from '../redux/actions'
 
 const Cart = () => {
   const cart = useSelector((currentState) => {
@@ -20,11 +20,7 @@ const Cart = () => {
                 variant="danger"
                 onClick={() => {
                   // dispatch di una action per RIMUOVERE un libro dal carrello
-                  dispatch({
-                    type: REMOVE_FROM_CART,
-                    payload: book.id, // fornisco al reducer anche l'id del libro, altrimenti
-                    // non saprebbe quale rimuovere!
-                  })
+                  dispatch(removeFromCartAction(book.id))
                 }}
               >
                 <FaTrash />

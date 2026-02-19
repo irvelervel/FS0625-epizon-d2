@@ -1,7 +1,7 @@
 import { Col, Row, Button } from 'react-bootstrap'
 import { FaShoppingCart } from 'react-icons/fa'
 import { useDispatch, useSelector } from 'react-redux'
-import { ADD_TO_CART } from '../redux/actions'
+import { ADD_TO_CART, addToCartAction } from '../redux/actions'
 
 const BookDetail = ({ bookSelected }) => {
   const dispatch = useDispatch()
@@ -48,10 +48,8 @@ const BookDetail = ({ bookSelected }) => {
                   // ora vorremo alla pressione del bottone interagire con il Redux Store
                   // vorremo ""modificare"" lo stato -> ma lo stato è IMMUTABILE -> NUOVO STATO
                   // per creare un nuovo stato, tutto parte dal DISPATCH di una ACTION
-                  dispatch({
-                    type: ADD_TO_CART, // un po' come le costanti in JS
-                    payload: bookSelected,
-                  })
+                  dispatch(addToCartAction(bookSelected)) // ora la action mi viene restituita
+                  // dall'invocazione di un action creator
                 }}
               >
                 <span className="me-2">AGGIUNGI AL</span>
