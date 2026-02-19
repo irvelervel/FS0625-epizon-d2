@@ -1,18 +1,20 @@
 // in questo file principale creeremo lo Store di Redux
-import { configureStore, combineReducers } from '@reduxjs/toolkit'
+import { configureStore } from '@reduxjs/toolkit'
 import cartReducer from '../reducers/cartReducer'
 import userReducer from '../reducers/userReducer'
+import shopReducer from '../reducers/shopReducer'
 
-// per "ricompattare" i vari mini-reducers che abbiamo creato, utilizziamo la funzione "combineReducers()"
-// questa funzione va invocata con un oggetto: dentro questo oggetto, ricreerete le singole "fette" dello store
-const bigReducer = combineReducers({
-  cart: cartReducer,
-  user: userReducer,
-  // cart e user sono le "slices" che voglio ricreare
-})
+// per "ricompattare" i vari mini-reducers che abbiamo creato, invece che assegnare un singolo reducer
+// come valore assegniamo un oggetto: dentro questo oggetto, ricreerete le singole "fette" dello store
 
 const store = configureStore({
-  reducer: bigReducer, // senza indicare il reducer, uno Store Redux non ha senso
+  reducer: {
+    cart: cartReducer,
+    user: userReducer,
+    // cart e user sono le "slices" che voglio ricreare
+    // creo anche una fetta "shop", per salvare i libri disponibili
+    shop: shopReducer,
+  }, // senza indicare il reducer, uno Store Redux non ha senso
 })
 
 export default store

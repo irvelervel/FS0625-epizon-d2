@@ -6,6 +6,8 @@
 export const ADD_TO_CART = 'ADD_TO_CART'
 export const REMOVE_FROM_CART = 'REMOVE_FROM_CART'
 export const SET_USERNAME = 'SET_USERNAME'
+export const GET_BOOKS = 'GET_BOOKS'
+export const GET_BOOKS_ERROR = 'GET_BOOKS_ERROR'
 
 // ACTION CREATORS
 // Gli action creators diventano utili nelle situazioni in cui volete "centralizzare" porzioni di logica
@@ -42,3 +44,44 @@ export const setUsernameAction = (formValue) => ({
   type: SET_USERNAME,
   payload: formValue,
 })
+
+// ora creiamo un action creator più complesso, che sarà adatto ad ospitare anche logica asincrona
+// per poter centralizzare il dispatch della action apposita dopo aver recuperato i libri dalla API
+export const getBooksAction = () => {
+  // se negli action creator precedenti io RITORNAVO UNA ACTION (un oggetto JS), questa volta
+  // questo action creator RITORNERÀ UNA FUNZIONE
+  // Redux conosce questo pattern: se la funzione dispatch viene utilizzata con una ulteriore
+  // funzione, Redux la eseguirà e le fornirà dei parametri aggiuntivi
+  return async (dispatch, getState) => {
+    // Redux ESEGUIRÀ QUESTO CODICE, e questa funzione interna riceverà 2 parametri da Redux:
+    // dispatch -> la funzione per dispatchare actions
+    // getState -> se eseguito, vi ritornerà un oggetto: l'intero contenuto attuale dello Store
+    // inoltre, questa funzione ritornata può essere asincrona!
+
+    // getState se invocato vi torna lo stato corrente
+    console.log(getState())
+
+    fetch('https://striveschool-api.herokuapp.com/food-books')
+      .then((res) => {
+        if (res.ok) {
+          return res.json()
+        } else {
+          throw new Error('errore nel recupero libri')
+        }
+      })
+      .then((data) => {
+        // qui adesso voglio inviare data (che sarebbe l'array dei libri disponibili recuperato da API)
+        // al Redux Store!
+        dispatch({
+          type: GET_BOOKS,
+          payload: data,
+        })
+      })
+      .catch((error) => {
+        console.log(error)
+        dispatch({
+          type: GET_BOOKS_ERROR,
+        })
+      })
+  }
+}
